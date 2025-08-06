@@ -1,0 +1,72 @@
+version: '3'
+
+tasks:
+  install:
+    desc: Install the package in development mode
+    cmds:
+      - uv pip install -e ".[dev]"
+
+  test:
+    desc: Run all tests
+    cmds:
+      - uv run pytest -n auto
+
+  test:verbose:
+    desc: Run tests with verbose output
+    cmds:
+      - uv run pytest -vv
+
+  lint:
+    desc: Run linting with ruff
+    cmds:
+      - uv run ruff check src tests
+      - uv run ruff format --check src tests
+
+  lint:fix:
+    desc: Fix linting issues
+    cmds:
+      - uv run ruff check --fix src tests
+      - uv run ruff format src tests
+
+  typecheck:
+    desc: Run type checking with mypy
+    cmds:
+      - uv run mypy src tests
+
+  pre-commit:
+    desc: Run pre-commit hooks on all files
+    cmds:
+      - uv run pre-commit run --all-files
+
+  pre-commit:install:
+    desc: Install pre-commit hooks
+    cmds:
+      - uv run pre-commit install
+
+  ci:
+    desc: Run all CI checks (lint, typecheck, test)
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
+
+  clean:
+    desc: Clean build artifacts and caches
+    cmds:
+      - rm -rf build dist *.egg-info
+      - rm -rf .pytest_cache .mypy_cache .ruff_cache
+      - find . -type d -name __pycache__ -exec rm -rf {} +
+      - find . -type f -name "*.pyc" -delete
+
+  build:
+    desc: Build the package
+    cmds:
+      - uv build
+
+  release:
+    desc: Create a new release (specify version with VERSION=x.y.z)
+    cmds:
+      - test -n "$VERSION" || (echo "Please specify VERSION=x.y.z" && exit 1)
+      - git tag -a "v$VERSION" -m "Release v$VERSION"
+      - git push origin "v$VERSION"
+      - echo "Tagged and pushed v$VERSION"

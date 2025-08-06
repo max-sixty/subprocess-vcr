@@ -1,0 +1,52 @@
+version: 1
+interactions:
+  - args: echo 'Hello from getoutput!'
+    kwargs:
+      stdout: PIPE
+      stderr: -2
+      text: true
+      encoding: null
+      errors: null
+    duration: 0.003442049026489258
+    returncode: 0
+    stdout: |
+      Hello from getoutput!
+    stderr: null
+  - args: echo 'Hello from getstatusoutput!'
+    kwargs:
+      stdout: PIPE
+      stderr: -2
+      text: true
+      encoding: null
+      errors: null
+    duration: 0.002911090850830078
+    returncode: 0
+    stdout: |
+      Hello from getstatusoutput!
+    stderr: null
+  - args: echo 'This is an error' >&2; exit 42
+    kwargs:
+      stdout: PIPE
+      stderr: -2
+      text: true
+      encoding: null
+      errors: null
+    duration: 0.002886056900024414
+    returncode: 42
+    stdout: |
+      This is an error
+    stderr: null
+  - args: echo 'Line 1'; echo 'Line 2'; echo 'Line 3'
+    kwargs:
+      stdout: PIPE
+      stderr: -2
+      text: true
+      encoding: null
+      errors: null
+    duration: 0.0029697418212890625
+    returncode: 0
+    stdout: |
+      Line 1
+      Line 2
+      Line 3
+    stderr: null

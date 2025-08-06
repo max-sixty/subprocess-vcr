@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subprocess-vcr"
+version = "0.1.0"
+description = "VCR for subprocess - record and replay subprocess calls for testing"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [{name = "Max Sixty", email = "max@sixty.net"}]
+keywords = ["testing", "subprocess", "vcr", "mock", "pytest", "recording", "replay"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Pytest",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Testing :: Mocking",
+]
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-xdist>=3.5.0",
+    "mypy>=1.8.0",
+    "ruff>=0.9.7",
+    "pre-commit>=3.5.0",
+    "types-pyyaml>=6.0.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/max-sixty/subprocess-vcr"
+Repository = "https://github.com/max-sixty/subprocess-vcr"
+Issues = "https://github.com/max-sixty/subprocess-vcr/issues"
+
+[project.entry-points.pytest11]
+subprocess_vcr = "subprocess_vcr.pytest_plugin"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.mypy]
+files = ["src", "tests"]
+check_untyped_defs = true
+ignore_missing_imports = true
+show_error_context = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "subprocess_vcr: marks tests to use subprocess VCR recording/replay",
+]
+addopts = [
+    "--strict-markers",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+extend-select = [
+    "F",   # Pyflakes
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "UP",  # pyupgrade
+    "PIE", # flake8-pie
+    "TID", # flake8-tidy-imports (absolute imports)
+    "PGH", # pygrep-hooks
+]
+extend-safe-fixes = [
+    "TID252", # absolute imports
+]
+ignore = [
+    "E402",    # module level import not at top of file
+    "E501",    # line too long - let the formatter worry about that
+    "E731",    # do not assign a lambda expression, use a def
+    "PIE790",  # unnecessary pass statement
+    "PGH003",  # Use specific rule codes when ignoring type issues
+]
