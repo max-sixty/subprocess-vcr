@@ -4,8 +4,8 @@ import pytest
 
 from subprocess_vcr.filters import PathFilter, PythonExecutableFilter
 
-# This ensures the plugin is loaded for all tests in this directory
-pytest_plugins = ["subprocess_vcr.pytest_plugin", "pytester"]
+# The plugin is automatically loaded via entry points, we only need pytester
+pytest_plugins = ["pytester"]
 
 
 @pytest.fixture(scope="session")
