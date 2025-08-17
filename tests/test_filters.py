@@ -86,7 +86,9 @@ class TestPathFilter:
         assert "<APP_ROOT>" in interaction["stdout"]
         assert "<LOG_DIR>" in interaction["stdout"]
 
-    @pytest.mark.xfail(sys.platform == "win32", reason="Windows HOME path handling differs")
+    @pytest.mark.xfail(
+        sys.platform == "win32", reason="Windows HOME path handling differs"
+    )
     def test_home_directory_normalization(self, tmp_path):
         """Test that home directories are normalized."""
         import os

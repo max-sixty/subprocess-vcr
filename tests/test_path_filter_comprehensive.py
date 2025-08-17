@@ -86,7 +86,9 @@ class TestPathFilterComprehensive:
                 f"Expected {expected}, got {result['args'][1]}"
             )
 
-    @pytest.mark.xfail(sys.platform == "win32", reason="Windows HOME path handling differs")
+    @pytest.mark.xfail(
+        sys.platform == "win32", reason="Windows HOME path handling differs"
+    )
     def test_home_directory_normalization(self):
         """Test home directory normalization works correctly."""
         import os
