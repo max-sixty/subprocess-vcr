@@ -21,7 +21,7 @@ vcr_force_mode_key = StashKey[str]()
 vcr_is_retry_key = StashKey[bool]()
 
 # For session-level state, use config.stash
-retried_tests_key = StashKey[set[str]]()
+retried_tests_key: StashKey[set[str]] = StashKey()
 
 
 def pytest_addoption(parser):

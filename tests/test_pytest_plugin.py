@@ -5,9 +5,6 @@ from pathlib import Path
 
 import pytest
 
-# Plugin is already loaded via entry point in pyproject.toml
-# No need to load it again
-
 
 @pytest.fixture(scope="session")
 def subprocess_vcr_config():

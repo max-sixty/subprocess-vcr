@@ -49,10 +49,10 @@ def test_with_env_tracking(request):
 
     # Run test in replay+reset mode
     result = pytester.runpytest_subprocess(
-        "-xvs",
-        "--subprocess-vcr=replay+reset",
         "-p",
         "subprocess_vcr.pytest_plugin",
+        "-xvs",
+        "--subprocess-vcr=replay+reset",
     )
 
     # Should see retry message
@@ -109,10 +109,10 @@ def test_changing_commands():
 
     # Run test in replay+reset mode
     result = pytester.runpytest(
-        "-xvs",
-        "--subprocess-vcr=replay+reset",
         "-p",
         "subprocess_vcr.pytest_plugin",
+        "-xvs",
+        "--subprocess-vcr=replay+reset",
         "test_dynamic.py",
     )
 

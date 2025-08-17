@@ -3,14 +3,13 @@
 import textwrap
 
 
-def test_replay_reset_shows_R_indicator_on_fallback(pytester, monkeypatch):
-    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+def test_replay_reset_shows_R_indicator_on_fallback(pytester):
     """Test that replay+reset mode shows 'R' indicator when falling back to reset.
 
     This test demonstrates the bug where "no tests ran" is shown instead of
     the proper 'R' indicator when a test fails replay and falls back to reset.
     """
-    # No need for conftest - plugin will be loaded with -p flag
+    # Plugin is auto-loaded via entry point, no need for explicit loading
 
     # Create a test file
     pytester.makepyfile(
@@ -34,11 +33,7 @@ def test_replay_reset_shows_R_indicator_on_fallback(pytester, monkeypatch):
     )
 
     # First, record the cassette
-    result = pytester.runpytest_subprocess(
-        "--subprocess-vcr=record",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
-    )
+    result = pytester.runpytest("--subprocess-vcr=record")
 
     # The test should show 'r' for recorded and mention vcr_record
     result.stdout.fnmatch_lines(["*test_indicator.py*r*", "*1 vcr_record*"])
@@ -55,11 +50,7 @@ def test_replay_reset_shows_R_indicator_on_fallback(pytester, monkeypatch):
     cassette_file.write_text(corrupted_content)
 
     # Run in replay+reset mode - this should retry and show 'R'
-    result = pytester.runpytest_subprocess(
-        "--subprocess-vcr=replay+reset",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
-    )
+    result = pytester.runpytest("--subprocess-vcr=replay+reset")
 
     # Bug: Currently shows "no tests ran" instead of proper result
     # Expected: Should show 'R' indicator and pass
@@ -81,10 +72,9 @@ def test_replay_reset_shows_R_indicator_on_fallback(pytester, monkeypatch):
     assert "corrupted output" not in fixed_content, "Corrupted content should be gone"
 
 
-def test_replay_reset_shows_dot_on_successful_replay(pytester, monkeypatch):
-    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+def test_replay_reset_shows_dot_on_successful_replay(pytester):
     """Test that replay+reset mode shows '.' when replay succeeds (no reset needed)."""
-    # No need for conftest - plugin will be loaded with -p flag
+    # Plugin is auto-loaded via entry point, no need for explicit loading
 
     # Create a test file
     pytester.makepyfile(
@@ -108,29 +98,20 @@ def test_replay_reset_shows_dot_on_successful_replay(pytester, monkeypatch):
     )
 
     # First, record the cassette
-    result = pytester.runpytest_subprocess(
-        "--subprocess-vcr=record",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
-    )
+    result = pytester.runpytest("--subprocess-vcr=record")
     result.stdout.fnmatch_lines(["*1 vcr_record*"])
 
     # Run in replay+reset mode with valid cassette - should just replay
-    result = pytester.runpytest_subprocess(
-        "--subprocess-vcr=replay+reset",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
-    )
+    result = pytester.runpytest("--subprocess-vcr=replay+reset")
     result.stdout.fnmatch_lines(["*1 passed*"])
 
     # Should show '.' for normal pass (replay succeeded, no reset needed)
     result.stdout.fnmatch_lines(["*test_success.py .*"])
 
 
-def test_reset_mode_shows_R_indicator(pytester, monkeypatch):
-    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
+def test_reset_mode_shows_R_indicator(pytester):
     """Test that reset mode always shows 'R' indicator."""
-    # No need for conftest - plugin will be loaded with -p flag
+    # Plugin is auto-loaded via entry point, no need for explicit loading
 
     # Create a test file
     pytester.makepyfile(
@@ -154,11 +135,7 @@ def test_reset_mode_shows_R_indicator(pytester, monkeypatch):
     )
 
     # Run in reset mode - should always show 'R'
-    result = pytester.runpytest_subprocess(
-        "--subprocess-vcr=reset",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
-    )
+    result = pytester.runpytest("--subprocess-vcr=reset")
 
     # Should show 'R' for reset
     result.stdout.fnmatch_lines(["*test_reset.py R*", "*1 vcr_reset*"])

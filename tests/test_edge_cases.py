@@ -65,6 +65,7 @@ class TestShellCommandComplexity:
         assert "apple" in result.stdout
         assert "apricot" in result.stdout
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows shell quoting differs")
     def test_shell_redirects(self, tmp_path):
         """Test shell redirects (>, >>, 2>&1)."""
         cassette = tmp_path / "redirects.yaml"
@@ -105,6 +106,7 @@ class TestShellCommandComplexity:
         assert "error" in result2.stdout
         assert result2.stderr == ""  # stderr was redirected
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows shell behavior differs")
     def test_shell_command_substitution(self, tmp_path):
         """Test command substitution in shell."""
         cassette = tmp_path / "cmd_substitution.yaml"
@@ -428,6 +430,7 @@ class TestDataHandling:
         assert result.stdout == b""
         assert result.stderr == b""
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows encoding differs")
     def test_unicode_handling(self, tmp_path):
         """Test various Unicode scenarios."""
         cassette = tmp_path / "unicode.yaml"
@@ -821,6 +824,7 @@ class TestSpecialCases:
         assert result.returncode == 0
         assert "1000" in result.stdout
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows filename restrictions")
     def test_special_filenames(self, tmp_path):
         """Test handling of special characters in filenames."""
         # Create files with special names

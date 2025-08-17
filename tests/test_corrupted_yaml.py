@@ -63,10 +63,10 @@ def test_corrupted_yaml_replay_mode_fails(pytester, monkeypatch):
 
     # Run test in replay mode - should fail with clear error
     result = pytester.runpytest_subprocess(
-        "-xvs",
-        "--subprocess-vcr=replay",
         "-p",
         "subprocess_vcr.pytest_plugin",
+        "-xvs",
+        "--subprocess-vcr=replay",
     )
 
     # Setup errors: YAML parsing fails during test setup, not execution
@@ -84,10 +84,10 @@ def test_corrupted_yaml_reset_mode_succeeds(pytester, monkeypatch):
 
     # Run test in reset mode - should succeed and replace cassette
     result = pytester.runpytest_subprocess(
-        "-xvs",
-        "--subprocess-vcr=reset",
         "-p",
         "subprocess_vcr.pytest_plugin",
+        "-xvs",
+        "--subprocess-vcr=reset",
     )
 
     # VCR-specific: Reset mode shows custom status marker
@@ -107,10 +107,10 @@ def test_corrupted_yaml_record_mode_fails(pytester, monkeypatch):
 
     # Run test in record mode - should fail with clear error
     result = pytester.runpytest_subprocess(
-        "-xvs",
-        "--subprocess-vcr=record",
         "-p",
         "subprocess_vcr.pytest_plugin",
+        "-xvs",
+        "--subprocess-vcr=record",
     )
 
     # Setup errors: YAML parsing fails during test setup, not execution
@@ -128,10 +128,10 @@ def test_replay_reset_with_corrupted_yaml(pytester, monkeypatch):
 
     # Run test in replay+reset mode
     result = pytester.runpytest_subprocess(
-        "-xvs",
-        "--subprocess-vcr=replay+reset",
         "-p",
         "subprocess_vcr.pytest_plugin",
+        "-xvs",
+        "--subprocess-vcr=replay+reset",
     )
 
     # With the new retry implementation, tests that fail during setup due to

@@ -10,6 +10,7 @@ import yaml
 class TestShellCommands:
     """Test proper handling of shell=True commands."""
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows shell quoting differs")
     def test_shell_command_recorded_as_string(self, tmp_path):
         """Test that shell commands are recorded as strings, not character lists."""
         from subprocess_vcr import SubprocessVCR
@@ -139,6 +140,7 @@ class TestShellCommands:
         assert "|" in recorded_cmd
 
     @pytest.mark.subprocess_vcr
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows shell quoting differs")
     def test_convenience_functions_use_proper_format(self):
         """Test that getoutput/getstatusoutput record shell commands as strings."""
         # These use shell=True internally
