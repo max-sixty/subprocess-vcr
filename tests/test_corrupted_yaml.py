@@ -63,7 +63,8 @@ def test_corrupted_yaml_replay_mode_fails(pytester, monkeypatch):
 
     # Run test in replay mode - should fail with clear error
     result = pytester.runpytest_subprocess(
-        "-p", "subprocess_vcr.pytest_plugin",
+        "-p",
+        "subprocess_vcr.pytest_plugin",
         "-xvs",
         "--subprocess-vcr=replay",
     )
@@ -83,7 +84,8 @@ def test_corrupted_yaml_reset_mode_succeeds(pytester, monkeypatch):
 
     # Run test in reset mode - should succeed and replace cassette
     result = pytester.runpytest_subprocess(
-        "-p", "subprocess_vcr.pytest_plugin",
+        "-p",
+        "subprocess_vcr.pytest_plugin",
         "-xvs",
         "--subprocess-vcr=reset",
     )
@@ -105,7 +107,8 @@ def test_corrupted_yaml_record_mode_fails(pytester, monkeypatch):
 
     # Run test in record mode - should fail with clear error
     result = pytester.runpytest_subprocess(
-        "-p", "subprocess_vcr.pytest_plugin",
+        "-p",
+        "subprocess_vcr.pytest_plugin",
         "-xvs",
         "--subprocess-vcr=record",
     )
@@ -125,7 +128,8 @@ def test_replay_reset_with_corrupted_yaml(pytester, monkeypatch):
 
     # Run test in replay+reset mode
     result = pytester.runpytest_subprocess(
-        "-p", "subprocess_vcr.pytest_plugin",
+        "-p",
+        "subprocess_vcr.pytest_plugin",
         "-xvs",
         "--subprocess-vcr=replay+reset",
     )
