@@ -1,6 +1,6 @@
 # Subprocess VCR - TODO
 
-## High Priority Issues
+## Low Priority Issues
 
 ### Thread Safety and Concurrency
 
@@ -16,28 +16,8 @@
   - Would eliminate most global state issues
   - More complex but more robust for concurrent usage
 
-### Missing Subprocess API Coverage
+### TimeoutExpired Exception Handling
 
-- ✅ `subprocess.getoutput()` - Fully supported (added tests in
-  test_convenience_functions.py)
-- ✅ `subprocess.getstatusoutput()` - Fully supported (added tests in
-  test_convenience_functions.py)
-
-### Shell Command Recording
-
-- ✅ Fixed shell=True command recording - Commands are now properly stored as
-  strings instead of character arrays
-  - Fixed in core.py RecordingPopen.**init** to preserve string commands
-  - Added comprehensive tests in test_shell_commands.py
-  - Cassette files are now much more readable for shell commands
-
-### Process Control Implementation
-
-- ✅ `Popen.terminate()` and `Popen.kill()` - Fully implemented (added in
-  core.py)
-  - RecordingPopen forwards calls to real process
-  - SimpleMockPopen provides no-op implementations
-  - Added comprehensive tests in test_process_control.py
 - Record and replay `TimeoutExpired` exceptions properly
   - Currently, timeouts result in killed processes (returncode -9) being
     recorded
@@ -50,7 +30,7 @@
 - Use `locale.getpreferredencoding(False)` as default encoding instead of UTF-8
 - Match subprocess module's encoding behavior more closely
 
-## Future Enhancements
+## Low Priority Enhancements
 
 ### Better Debug Output
 
@@ -65,10 +45,8 @@
 
 ### Packaging for PyPI
 
-- Create proper `pyproject.toml` with metadata
 - Add `__version__` to `__init__.py`
 - Set up GitHub Actions for CI/CD
-- Add LICENSE file
 
 ### CLI Tools
 
