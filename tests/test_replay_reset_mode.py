@@ -73,7 +73,7 @@ def test_echo(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         ],
         capture_output=True,
         text=True,
-        env=dict(os.environ, PYTHONPATH=pythonpath),
+        env=dict(os.environ, PYTHONPATH=pythonpath, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"),
     )
 
     # Test should pass transparently
@@ -107,7 +107,7 @@ def test_echo(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         ],
         capture_output=True,
         text=True,
-        env=dict(os.environ, PYTHONPATH=pythonpath),
+        env=dict(os.environ, PYTHONPATH=pythonpath, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"),
     )
 
     assert result2.returncode == 0
@@ -149,7 +149,7 @@ def test_ls(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         ],
         capture_output=True,
         text=True,
-        env=dict(os.environ, PYTHONPATH=pythonpath),
+        env=dict(os.environ, PYTHONPATH=pythonpath, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"),
     )
     assert result1.returncode == 0
 
@@ -167,7 +167,7 @@ def test_ls(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         ],
         capture_output=True,
         text=True,
-        env=dict(os.environ, PYTHONPATH=pythonpath),
+        env=dict(os.environ, PYTHONPATH=pythonpath, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"),
     )
 
     assert result2.returncode == 0
@@ -176,7 +176,8 @@ def test_ls(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
     assert "retrying with reset mode" not in result2.stdout
 
 
-def test_replay_reset_mode_non_vcr_failure(pytester):
+def test_replay_reset_mode_non_vcr_failure(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test that replay+reset mode DOES retry on ALL failures, including non-VCR failures."""
     # Use a unique marker file to avoid conflicts in parallel runs
     import uuid
@@ -226,7 +227,12 @@ def test_will_fail(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
     )
 
     # Create cassette first - the test will fail but cassette will be created
-    result = pytester.runpytest("-xvs", "--subprocess-vcr=reset")
+    result = pytester.runpytest_subprocess(
+        "-xvs",
+        "--subprocess-vcr=reset",
+        "-p",
+        "subprocess_vcr.pytest_plugin",
+    )
     # The test fails on purpose, but the cassette should be created
     assert result.ret == 1
 
@@ -236,7 +242,12 @@ def test_will_fail(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         marker_file.unlink()
 
     # Run with replay+reset - should succeed after retry
-    result = pytester.runpytest("-xvs", "--subprocess-vcr=replay+reset")
+    result = pytester.runpytest_subprocess(
+        "-xvs",
+        "--subprocess-vcr=replay+reset",
+        "-p",
+        "subprocess_vcr.pytest_plugin",
+    )
 
     # In replay+reset mode, all failures should be retried
     # The test has a marker file mechanism to pass on retry
@@ -295,7 +306,7 @@ def test_second(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         ],
         capture_output=True,
         text=True,
-        env=dict(os.environ, PYTHONPATH=pythonpath),
+        env=dict(os.environ, PYTHONPATH=pythonpath, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"),
     )
 
     # Now run both tests with replay+reset
@@ -312,7 +323,7 @@ def test_second(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
         ],
         capture_output=True,
         text=True,
-        env=dict(os.environ, PYTHONPATH=pythonpath),
+        env=dict(os.environ, PYTHONPATH=pythonpath, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"),
     )
 
     # First test should replay successfully (has cassette)

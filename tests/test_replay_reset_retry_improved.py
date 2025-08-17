@@ -1,7 +1,8 @@
 """Improved tests for replay+reset retry functionality."""
 
 
-def test_replay_reset_retries_with_environment_tracking(pytester):
+def test_replay_reset_retries_with_environment_tracking(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test retry detection using environment variables for state tracking."""
     # Create a test that uses environment variables to track retry state
     pytester.makepyfile("""
@@ -47,7 +48,7 @@ def test_with_env_tracking(request):
 """)
 
     # Run test in replay+reset mode
-    result = pytester.runpytest(
+    result = pytester.runpytest_subprocess(
         "-xvs",
         "--subprocess-vcr=replay+reset",
         "-p",
@@ -62,7 +63,8 @@ def test_with_env_tracking(request):
     assert result.ret == 0
 
 
-def test_replay_reset_with_dynamic_commands(pytester):
+def test_replay_reset_with_dynamic_commands(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test that replay+reset handles dynamic command changes correctly."""
     # First, create a cassette with an initial command
     cassette_dir = pytester.path / "_vcr_cassettes"

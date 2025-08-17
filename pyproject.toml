@@ -66,6 +66,7 @@ warn_unused_ignores = true
 testpaths = ["tests"]
 markers = [
     "subprocess_vcr: marks tests to use subprocess VCR recording/replay",
+    "slow: marks tests as slow running",
 ]
 addopts = [
     "--strict-markers",
