@@ -1,8 +1,10 @@
 """Pytest plugin for Subprocess VCR."""
 
+from __future__ import annotations
+
 import platform
 import sys
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -197,7 +199,7 @@ def _subprocess_vcr_autouse(request, subprocess_vcr_config):
     # Collect metadata for the cassette
     metadata = {
         "test_name": test_name,
-        "recorded_at": datetime.now(UTC).isoformat(),
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
         "python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "platform": platform.system() + "-" + platform.release(),
     }

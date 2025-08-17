@@ -1,6 +1,7 @@
 """Test subprocess convenience functions with VCR."""
 
 import subprocess
+import sys
 
 import pytest
 
@@ -34,14 +35,20 @@ def test_getstatusoutput_recording():
 
 
 @pytest.mark.subprocess_vcr
+@pytest.mark.skipif(
+    sys.version_info < (3, 10), reason="encoding parameter requires Python 3.10+"
+)
 def test_getoutput_with_encoding():
     """Test getoutput with encoding parameter."""
-    # This uses the encoding parameter introduced in Python 3.8
+    # This uses the encoding parameter introduced in Python 3.10
     output = subprocess.getoutput("echo 'UTF-8 test: café'", encoding="utf-8")
     assert "café" in output
 
 
 @pytest.mark.subprocess_vcr
+@pytest.mark.skipif(
+    sys.version_info < (3, 10), reason="encoding parameter requires Python 3.10+"
+)
 def test_getstatusoutput_with_encoding():
     """Test getstatusoutput with encoding parameter."""
     status, output = subprocess.getstatusoutput(

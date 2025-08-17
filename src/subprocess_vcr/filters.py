@@ -1,5 +1,7 @@
 """Filter system for subprocess VCR - modify interactions before recording/playback."""
 
+from __future__ import annotations
+
 import os
 import re
 from collections.abc import Callable
@@ -118,13 +120,14 @@ class PathFilter(BaseFilter):
 
     def _detect_system_paths(self):
         """Detect and store system paths."""
-        import pwd
         from pathlib import Path
 
         # Capture real system paths (unaffected by pytest)
         try:
+            import pwd
+
             self.real_home = pwd.getpwuid(os.getuid()).pw_dir
-        except (KeyError, AttributeError):
+        except (ImportError, KeyError, AttributeError):
             # Fallback for Windows or unusual environments
             self.real_home = str(Path.home())
 

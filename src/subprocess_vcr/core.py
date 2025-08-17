@@ -1,5 +1,7 @@
 """Core VCR functionality for subprocess recording and replay."""
 
+from __future__ import annotations
+
 import base64
 import copy
 import logging
@@ -134,7 +136,7 @@ class SubprocessVCR:
         mode: str = "replay",
         metadata: dict[str, Any] | None = None,
         strict: bool = False,
-        filters: list["BaseFilter"] | None = None,
+        filters: list[BaseFilter] | None = None,
     ):
         """Initialize VCR.
 

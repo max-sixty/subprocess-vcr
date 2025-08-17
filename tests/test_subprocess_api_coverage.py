@@ -4,6 +4,8 @@ This module ensures that all subprocess methods work correctly with subprocess_v
 in every recording mode.
 """
 
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
