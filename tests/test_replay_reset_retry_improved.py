@@ -49,6 +49,7 @@ def test_with_env_tracking(request):
 
     # Run test in replay+reset mode
     result = pytester.runpytest_subprocess(
+        "-p", "subprocess_vcr.pytest_plugin",
         "-xvs",
         "--subprocess-vcr=replay+reset",
     )
@@ -107,6 +108,7 @@ def test_changing_commands():
 
     # Run test in replay+reset mode
     result = pytester.runpytest(
+        "-p", "subprocess_vcr.pytest_plugin",
         "-xvs",
         "--subprocess-vcr=replay+reset",
         "test_dynamic.py",
