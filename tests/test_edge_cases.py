@@ -641,8 +641,9 @@ interactions:
         # For root users (e.g., in Docker), we need to simulate the permission error
         # since root can write to read-only files
         import os
+        import sys
 
-        if os.getuid() == 0:
+        if sys.platform != "win32" and os.getuid() == 0:
             original_open = open
 
             def mock_open(path, mode="r", *args, **kwargs):

@@ -4,6 +4,8 @@ This module ensures that all subprocess methods work correctly with subprocess_v
 in every recording mode.
 """
 
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
@@ -40,7 +42,7 @@ class TestSubprocessAPIMethods:
                 lambda cmd, **kw: subprocess.check_output(
                     cmd, stderr=subprocess.DEVNULL, **kw
                 ),
-                lambda result: isinstance(result, bytes | str),
+                lambda result: isinstance(result, (bytes, str)),
             ),
             (
                 lambda cmd, **kw: subprocess.call(

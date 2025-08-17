@@ -56,12 +56,13 @@ def test_with_corrupted_cassette():
     return cassette_path
 
 
-def test_corrupted_yaml_replay_mode_fails(pytester):
+def test_corrupted_yaml_replay_mode_fails(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test that replay mode fails with clear error on corrupted YAML."""
     create_corrupted_cassette_test(pytester, "test_corrupted_yaml_replay_mode_fails")
 
     # Run test in replay mode - should fail with clear error
-    result = pytester.runpytest(
+    result = pytester.runpytest_subprocess(
         "-xvs",
         "--subprocess-vcr=replay",
         "-p",
@@ -74,14 +75,15 @@ def test_corrupted_yaml_replay_mode_fails(pytester):
     assert assert_in_output(result, "Failed to load VCR cassette")
 
 
-def test_corrupted_yaml_reset_mode_succeeds(pytester):
+def test_corrupted_yaml_reset_mode_succeeds(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test that reset mode succeeds even with corrupted YAML."""
     cassette_path = create_corrupted_cassette_test(
         pytester, "test_corrupted_yaml_reset_mode_succeeds"
     )
 
     # Run test in reset mode - should succeed and replace cassette
-    result = pytester.runpytest(
+    result = pytester.runpytest_subprocess(
         "-xvs",
         "--subprocess-vcr=reset",
         "-p",
@@ -98,12 +100,13 @@ def test_corrupted_yaml_reset_mode_succeeds(pytester):
     assert len(data["interactions"]) == 1
 
 
-def test_corrupted_yaml_record_mode_fails(pytester):
+def test_corrupted_yaml_record_mode_fails(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test that record mode fails with clear error on corrupted YAML."""
     create_corrupted_cassette_test(pytester, "test_corrupted_yaml_record_mode_fails")
 
     # Run test in record mode - should fail with clear error
-    result = pytester.runpytest(
+    result = pytester.runpytest_subprocess(
         "-xvs",
         "--subprocess-vcr=record",
         "-p",
@@ -116,14 +119,15 @@ def test_corrupted_yaml_record_mode_fails(pytester):
     assert assert_in_output(result, "Failed to load VCR cassette")
 
 
-def test_replay_reset_with_corrupted_yaml(pytester):
+def test_replay_reset_with_corrupted_yaml(pytester, monkeypatch):
+    monkeypatch.setenv("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
     """Test that replay+reset mode falls back to reset when YAML is corrupted."""
     cassette_path = create_corrupted_cassette_test(
         pytester, "test_replay_reset_with_corrupted_yaml"
     )
 
     # Run test in replay+reset mode
-    result = pytester.runpytest(
+    result = pytester.runpytest_subprocess(
         "-xvs",
         "--subprocess-vcr=replay+reset",
         "-p",

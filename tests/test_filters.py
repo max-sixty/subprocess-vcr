@@ -87,11 +87,20 @@ class TestPathFilter:
     def test_home_directory_normalization(self, tmp_path):
         """Test that home directories are normalized."""
         import os
-        import pwd
 
-        # Get the real home directory from the password database
-        # This is not affected by pytest's HOME manipulation
-        real_home = pwd.getpwuid(os.getuid()).pw_dir
+        # Get the real home directory
+        import sys
+
+        if sys.platform != "win32":
+            import pwd
+
+            # This is not affected by pytest's HOME manipulation on Unix
+            real_home = pwd.getpwuid(os.getuid()).pw_dir
+        else:
+            # Windows fallback
+            from pathlib import Path
+
+            real_home = str(Path.home())
 
         cassette_path = tmp_path / "test_home.yaml"
         # PathFilter now automatically detects and handles real vs test home

@@ -1,5 +1,7 @@
 """Core VCR functionality for subprocess recording and replay."""
 
+from __future__ import annotations
+
 import base64
 import copy
 import logging
@@ -134,7 +136,7 @@ class SubprocessVCR:
         mode: str = "replay",
         metadata: dict[str, Any] | None = None,
         strict: bool = False,
-        filters: list["BaseFilter"] | None = None,
+        filters: list[BaseFilter] | None = None,
     ):
         """Initialize VCR.
 
@@ -309,7 +311,7 @@ class SubprocessVCR:
 
         with _PATCH_LOCK:
             if self._original_popen:
-                subprocess.Popen = self._original_popen  # type: ignore[misc,assignment]
+                subprocess.Popen = self._original_popen  # type: ignore[misc]
                 self._original_popen = None  # Clear reference
                 logger.debug("Unpatched subprocess.Popen")
 

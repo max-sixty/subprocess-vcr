@@ -1,4 +1,4 @@
 """Conftest for replay+reset mode tests."""
 
 # Ensure subprocess_vcr plugin is loaded
-pytest_plugins = ["subprocess_vcr.pytest_plugin"]
+# Plugin is already loaded via entry point in pyproject.toml

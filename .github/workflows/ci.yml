@@ -13,17 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
-        exclude:
-          # Skip some combinations to save CI time
-          - os: windows-latest
-            python-version: "3.8"
-          - os: windows-latest
-            python-version: "3.9"
-          - os: macos-latest
-            python-version: "3.8"
-          - os: macos-latest
-            python-version: "3.9"
+        python-version: ["3.9", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -40,16 +30,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -e ".[dev]"
+          uv sync --all-extras
 
       - name: Run linting
         run: |
-          uv run ruff check src tests
-          uv run ruff format --check src tests
+          uv run pre-commit run --all-files
 
       - name: Run type checking
         run: |
-          uv run mypy src tests
+          uv run mypy
 
       - name: Run tests
         run: |
@@ -68,7 +57,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Build package
         run: |
@@ -76,8 +65,8 @@ jobs:
 
       - name: Check package
         run: |
-          uv pip install twine
-          uv run twine check dist/*
+          uv pip install --system twine
+          twine check dist/*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

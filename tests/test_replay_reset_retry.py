@@ -47,7 +47,7 @@ def test_retry_behavior(request):
     )
 
     # Should see retry message
-    assert "🔄 Retrying" in result.stdout.str()
+    assert "[RETRY] Retrying" in result.stdout.str()
 
     # TODO: pytester shows "no tests ran" when tests are retried via pytest hooks
     # This is a known limitation where pytester doesn't properly capture the output

@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-# Load our plugin for these tests
-pytest_plugins = ["subprocess_vcr.pytest_plugin"]
+# Plugin is already loaded via entry point in pyproject.toml
+# No need to load it again
 
 
 @pytest.fixture(scope="session")
