@@ -96,6 +96,4 @@ ignore = [
     "E731",    # do not assign a lambda expression, use a def
     "PIE790",  # unnecessary pass statement
     "PGH003",  # Use specific rule codes when ignoring type issues
-    "UP037",   # Remove quotes from type annotation - needed for forward refs
-    "UP045",   # Use X | None - not available in Python 3.8/3.9
 ]

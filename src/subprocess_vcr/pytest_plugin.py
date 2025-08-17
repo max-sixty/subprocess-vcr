@@ -6,7 +6,6 @@ import platform
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 from _pytest.runner import runtestprotocol
@@ -14,12 +13,9 @@ from pytest import Config, Item, StashKey
 
 from .core import SubprocessVCR
 
-if TYPE_CHECKING:
-    from typing import Optional
-
 # Define stash keys at module level - this is the canonical pytest pattern
 # These are type-safe and avoid conflicts with other plugins
-vcr_instance_key: StashKey[Optional[SubprocessVCR]] = StashKey()
+vcr_instance_key: StashKey[SubprocessVCR | None] = StashKey()
 vcr_force_mode_key: StashKey[str] = StashKey()
 vcr_is_retry_key: StashKey[bool] = StashKey()
 

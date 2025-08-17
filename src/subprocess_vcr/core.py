@@ -136,7 +136,7 @@ class SubprocessVCR:
         mode: str = "replay",
         metadata: dict[str, Any] | None = None,
         strict: bool = False,
-        filters: list["BaseFilter"] | None = None,
+        filters: list[BaseFilter] | None = None,
     ):
         """Initialize VCR.
 
