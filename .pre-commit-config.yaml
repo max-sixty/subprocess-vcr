@@ -6,12 +6,16 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.17.1
+  # Type checking
+  - repo: local
     hooks:
-      - id: mypy
-        additional_dependencies: [types-pyyaml>=6.0.12]
-        args: [--ignore-missing-imports]
+      - id: dmypy
+        name: dmypy
+        entry: uv run dmypy run
+        args: [--timeout, "3600"]
+        language: system
+        pass_filenames: false
+        always_run: true
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
