@@ -105,7 +105,7 @@ def pytest_runtest_protocol(item: Item, nextitem):
 
         # Also print to stdout for better visibility during test runs
         if item.config.getoption("-v"):
-            print(f"\n🔄 Retrying {item.nodeid} in reset mode after failure...")
+            print(f"\n[RETRY] Retrying {item.nodeid} in reset mode after failure...")
 
         # Store that this is a retry so we can force the reset indicator
         item.stash[vcr_is_retry_key] = True

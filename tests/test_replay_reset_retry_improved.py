@@ -56,7 +56,7 @@ def test_with_env_tracking(request):
     )
 
     # Should see retry message
-    assert "🔄 Retrying" in result.stdout.str()
+    assert "[RETRY] Retrying" in result.stdout.str()
 
     # TODO: Same pytester limitation - "no tests ran" may appear for retried tests
     # Test should pass after retry

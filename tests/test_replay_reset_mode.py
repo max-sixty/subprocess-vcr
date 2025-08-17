@@ -256,7 +256,7 @@ def test_will_fail(subprocess_vcr):  # Request subprocess_vcr fixture explicitly
     # Check for retry message in output
     result.stdout.fnmatch_lines(
         [
-            "*🔄 Retrying test_regular_failure.py::test_will_fail in reset mode after failure...*"
+            "*[RETRY] Retrying test_regular_failure.py::test_will_fail in reset mode after failure...*"
         ]
     )
 
