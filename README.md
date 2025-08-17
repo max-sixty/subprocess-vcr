@@ -19,36 +19,24 @@ def test_with_vcr():
 Run tests:
 
 ```bash
-# Default: VCR is disabled (runs actual subprocesses)
-pytest
-
 # Record new interactions, replay existing ones
 pytest --subprocess-vcr=record
 
-# Reset existing cassettes with new recordings
-pytest --subprocess-vcr=reset
-
-# Replay only - fails if subprocess call not in cassette
+# Replay only - fails if subprocess call not in cassette (for CI)
 pytest --subprocess-vcr=replay
-
-# Replay with automatic fallback to reset on any failure
-pytest --subprocess-vcr=replay+reset
-
-# Disable VCR entirely (default)
-pytest --subprocess-vcr=disable
 ```
 
 ## Recording Modes
 
 Subprocess VCR supports several recording modes:
 
-- **`replay`** - Replay only. Fails if a subprocess call is not found in the
-  cassette. Ensures deterministic test execution in CI.
-
 - **`record`** - Replays existing recordings, records new ones. For each
   subprocess call, it first checks if a recording exists. If found, it replays
   that recording. If not found, it executes and records the new subprocess call.
   Useful for incremental test development.
+
+- **`replay`** - Replay only. Fails if a subprocess call is not found in the
+  cassette. Ensures deterministic test execution in CI.
 
 - **`reset`** - Always record, replacing any existing cassettes and their
   metadata. Use this to refresh all recordings or when library behavior has
@@ -61,16 +49,6 @@ Subprocess VCR supports several recording modes:
   are preserved.
 
 - **`disable`** - No VCR, subprocess calls execute normally (default).
-
-### Mode Comparison
-
-| Mode           | Existing Recordings | New Subprocess Calls   | Use Case          |
-| -------------- | ------------------- | ---------------------- | ----------------- |
-| `record`       | Replays             | Records individually   | Daily development |
-| `reset`        | Ignores, re-records | Records                | Refresh cassettes |
-| `replay`       | Replays             | Fails                  | CI/production     |
-| `replay+reset` | Replays             | Restarts test in reset | Safe development  |
-| `disable`      | Ignores             | Executes               | Debugging         |
 
 ## Filters for Normalization and Redaction
 
