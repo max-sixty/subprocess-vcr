@@ -30,17 +30,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv venv
-          uv pip install -e ".[dev]"
+          uv sync --all-extras
 
       - name: Run linting
         run: |
-          uv run ruff check src tests
-          uv run ruff format --check src tests
+          uv run pre-commit run --all-files
 
       - name: Run type checking
         run: |
-          uv run mypy src tests
+          uv run mypy
 
       - name: Run tests
         run: |
@@ -59,7 +57,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Build package
         run: |
@@ -67,9 +65,8 @@ jobs:
 
       - name: Check package
         run: |
-          uv venv
-          uv pip install twine
-          uv run twine check dist/*
+          uv pip install --system twine
+          twine check dist/*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
