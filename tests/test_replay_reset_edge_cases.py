@@ -34,7 +34,7 @@ def test_double_failure(request):
     )
 
     # Should see retry message
-    assert "🔄 Retrying" in result.stdout.str()
+    assert "[RETRY] Retrying" in result.stdout.str()
 
     # When using subprocess execution, detailed output may not be captured
     # The key behavior we're testing is that the retry mechanism triggered
@@ -79,7 +79,7 @@ def test_vcr_cleanup(request):
     )
 
     # Should see retry message
-    assert "🔄 Retrying" in result.stdout.str()
+    assert "[RETRY] Retrying" in result.stdout.str()
 
     # Due to pytester limitations with retried tests, we see "no tests ran"
     # but the test actually passed on retry (exit code 0)
@@ -118,7 +118,7 @@ def test_setup_failure(request):
     )
 
     # Should see retry message
-    assert "🔄 Retrying" in result.stdout.str()
+    assert "[RETRY] Retrying" in result.stdout.str()
 
     # Due to pytester limitations with retried tests, we see "no tests ran"
     # but the test actually passed on retry (exit code 0)
@@ -158,7 +158,7 @@ def test_retry_count(request):
     # The important check is that we only retry once
 
     # Should see exactly one retry
-    retry_count = result.stdout.str().count("🔄 Retrying")
+    retry_count = result.stdout.str().count("[RETRY] Retrying")
     assert retry_count == 1, f"Expected 1 retry, got {retry_count}"
 
 
@@ -247,7 +247,7 @@ def test_call_failure(request):
     )
 
     # Should see retry message
-    assert "🔄 Retrying" in result.stdout.str()
+    assert "[RETRY] Retrying" in result.stdout.str()
 
     # Test should pass after retry
     assert result.ret == 0
@@ -286,7 +286,7 @@ def test_teardown_failure(request):
     )
 
     # Should NOT see retry message since teardown failures don't trigger retry
-    assert "🔄 Retrying" not in result.stdout.str()
+    assert "[RETRY] Retrying" not in result.stdout.str()
 
     # Due to pytester limitations with teardown failures, we see "no tests ran"
     # but the important verification is that no retry occurred
@@ -344,4 +344,4 @@ def test_preserve_cassette():
     assert new_mtime == original_mtime, "Cassette was modified during successful replay"
 
     # Should NOT see retry message
-    assert "🔄 Retrying" not in result2.stdout.str()
+    assert "[RETRY] Retrying" not in result2.stdout.str()

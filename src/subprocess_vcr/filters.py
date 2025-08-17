@@ -4,10 +4,8 @@ from __future__ import annotations
 
 import os
 import re
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
+from collections.abc import Callable
+from typing import Any
 
 
 class BaseFilter:
@@ -122,15 +120,20 @@ class PathFilter(BaseFilter):
 
     def _detect_system_paths(self):
         """Detect and store system paths."""
+        # Capture real system paths (unaffected by pytest)
+        import sys
         from pathlib import Path
 
-        # Capture real system paths (unaffected by pytest)
-        try:
-            import pwd
+        if sys.platform != "win32":
+            try:
+                import pwd
 
-            self.real_home = pwd.getpwuid(os.getuid()).pw_dir  # type: ignore[attr-defined,unused-ignore]
-        except (ImportError, KeyError, AttributeError):
-            # Fallback for Windows or unusual environments
+                self.real_home = pwd.getpwuid(os.getuid()).pw_dir
+            except (KeyError, AttributeError):
+                # Fallback for unusual environments
+                self.real_home = str(Path.home())
+        else:
+            # Windows
             self.real_home = str(Path.home())
 
         # Capture current environment (might be pytest-modified)
