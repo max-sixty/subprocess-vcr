@@ -10,7 +10,6 @@ import os
 import subprocess
 import sys
 from subprocess import PIPE, CalledProcessError, CompletedProcess, TimeoutExpired
-from typing import Union
 
 import pytest
 import yaml
