@@ -311,7 +311,7 @@ class SubprocessVCR:
 
         with _PATCH_LOCK:
             if self._original_popen:
-                subprocess.Popen = self._original_popen  # type: ignore[misc,assignment]
+                subprocess.Popen = self._original_popen  # type: ignore[misc]
                 self._original_popen = None  # Clear reference
                 logger.debug("Unpatched subprocess.Popen")
 
