@@ -86,11 +86,15 @@ class TestPathFilterComprehensive:
     def test_home_directory_normalization(self):
         """Test home directory normalization works correctly."""
         import os
-        import pwd
-
         # Get the real home directory from the password database
         # This is not affected by pytest's HOME manipulation
-        home = pwd.getpwuid(os.getuid()).pw_dir
+        try:
+            import pwd
+            home = pwd.getpwuid(os.getuid()).pw_dir  # type: ignore[attr-defined,unused-ignore]
+        except (ImportError, AttributeError):
+            # Windows doesn't have pwd module
+            from pathlib import Path
+            home = str(Path.home())
 
         # PathFilter now automatically detects and handles real vs test home
         filter = PathFilter()
