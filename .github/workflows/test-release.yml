@@ -1,20 +1,25 @@
-name: Release
+name: Test Release
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+    paths:
+      - 'pyproject.toml'
+      - 'src/**'
+      - '.github/workflows/test-release.yml'
 
 permissions:
-  contents: write
+  contents: read
   id-token: write  # Required for OIDC trusted publishing
 
 jobs:
-  release:
+  test-publish:
     runs-on: ubuntu-latest
     environment:
-      name: pypi
-      url: https://pypi.org/project/subprocess-vcr/
+      name: testpypi
+      url: https://test.pypi.org/project/subprocess-vcr/
     steps:
       - uses: actions/checkout@v4
 
@@ -32,14 +37,6 @@ jobs:
         run: |
           uv build
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*
-          generate_release_notes: true
-          draft: false
-          prerelease: false
-
-      - name: Publish to PyPI
+      - name: Publish to TestPyPI
         run: |
-          uv publish --trusted-publishing always
+          uv publish --publish-url https://test.pypi.org/legacy/ --trusted-publishing always
