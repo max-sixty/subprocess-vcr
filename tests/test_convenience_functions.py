@@ -41,7 +41,7 @@ def test_getstatusoutput_recording():
 def test_getoutput_with_encoding():
     """Test getoutput with encoding parameter."""
     # This uses the encoding parameter introduced in Python 3.11
-    output = subprocess.getoutput("echo 'UTF-8 test: café'", encoding="utf-8")
+    output = subprocess.getoutput("echo 'UTF-8 test: café'", encoding="utf-8")  # type: ignore[call-arg,unused-ignore]
     assert "café" in output
 
 
@@ -52,7 +52,7 @@ def test_getoutput_with_encoding():
 def test_getstatusoutput_with_encoding():
     """Test getstatusoutput with encoding parameter."""
     status, output = subprocess.getstatusoutput(
-        "echo 'UTF-8 test: café'", encoding="utf-8"
+        "echo 'UTF-8 test: café'", encoding="utf-8"  # type: ignore[call-arg,unused-ignore]
     )
     assert status == 0
     assert "café" in output
