@@ -1,9 +1,13 @@
 """Filter system for subprocess VCR - modify interactions before recording/playback."""
 
+from __future__ import annotations
+
 import os
 import re
-from collections.abc import Callable
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class BaseFilter:

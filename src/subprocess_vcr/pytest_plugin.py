@@ -1,9 +1,12 @@
 """Pytest plugin for Subprocess VCR."""
 
+from __future__ import annotations
+
 import platform
 import sys
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 from _pytest.runner import runtestprotocol
@@ -11,14 +14,17 @@ from pytest import Config, Item, StashKey
 
 from .core import SubprocessVCR
 
+if TYPE_CHECKING:
+    from typing import Optional
+
 # Define stash keys at module level - this is the canonical pytest pattern
 # These are type-safe and avoid conflicts with other plugins
-vcr_instance_key = StashKey[SubprocessVCR | None]()
-vcr_force_mode_key = StashKey[str]()
-vcr_is_retry_key = StashKey[bool]()
+vcr_instance_key: StashKey[Optional[SubprocessVCR]] = StashKey()
+vcr_force_mode_key: StashKey[str] = StashKey()
+vcr_is_retry_key: StashKey[bool] = StashKey()
 
 # For session-level state, use config.stash
-retried_tests_key = StashKey[set[str]]()
+retried_tests_key: StashKey[set[str]] = StashKey()
 
 
 def pytest_addoption(parser):
@@ -197,7 +203,7 @@ def _subprocess_vcr_autouse(request, subprocess_vcr_config):
     # Collect metadata for the cassette
     metadata = {
         "test_name": test_name,
-        "recorded_at": datetime.now(UTC).isoformat(),
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
         "python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
         "platform": platform.system() + "-" + platform.release(),
     }
