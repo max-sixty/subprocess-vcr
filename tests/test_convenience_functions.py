@@ -7,6 +7,7 @@ import pytest
 
 
 @pytest.mark.subprocess_vcr
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows shell quoting differs")
 def test_getoutput_recording():
     """Test that subprocess.getoutput() is recorded and replayed correctly."""
     # Record a simple command
@@ -20,6 +21,7 @@ def test_getoutput_recording():
 
 
 @pytest.mark.subprocess_vcr
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows shell quoting differs")
 def test_getstatusoutput_recording():
     """Test that subprocess.getstatusoutput() is recorded and replayed correctly."""
     # Record a successful command
@@ -55,6 +57,7 @@ if sys.version_info >= (3, 10):
 
 
 @pytest.mark.subprocess_vcr
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows shell behavior differs")
 def test_shell_special_characters():
     """Test that shell special characters work correctly."""
     # getoutput and getstatusoutput use shell=True

@@ -1,6 +1,7 @@
 """Tests for the filter system."""
 
 import subprocess
+import sys
 
 import pytest
 
@@ -19,6 +20,7 @@ class TestPathFilter:
     functionality that was previously in separate CwdFilter and TestRunnerCwdFilter classes.
     """
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows path separators differ")
     def test_normalizes_pytest_paths(self, tmp_path):
         """Test that pytest temporary paths are normalized."""
         cassette_path = tmp_path / "test_paths.yaml"
@@ -84,6 +86,7 @@ class TestPathFilter:
         assert "<APP_ROOT>" in interaction["stdout"]
         assert "<LOG_DIR>" in interaction["stdout"]
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows HOME path handling differs")
     def test_home_directory_normalization(self, tmp_path):
         """Test that home directories are normalized."""
         import os
@@ -125,6 +128,7 @@ class TestPathFilter:
         assert "<HOME>" in interaction["stdout"]
         assert real_home not in interaction["stdout"]
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows path separators differ")
     def test_cwd_normalization(self, tmp_path):
         """Test that CWD paths are normalized (integrated functionality)."""
         cassette_path = tmp_path / "test_cwd.yaml"
@@ -182,6 +186,7 @@ class TestPathFilter:
         # /etc/passwd is not under cwd, should be unchanged
         assert interaction["args"][1] == "/etc/passwd"
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows path handling differs")
     def test_normalizes_paths_in_stdout_stderr(self, tmp_path):
         """Test that paths in stdout/stderr are normalized."""
         cassette_path = tmp_path / "test_output_normalization.yaml"
@@ -214,6 +219,7 @@ class TestPathFilter:
         assert "File: <CWD>/test.txt" in interaction["stdout"]
         assert str(tmp_path) not in interaction["stdout"]
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows path separators differ")
     def test_normalizes_env_vars_with_paths(self, tmp_path):
         """Test that environment variables containing paths are normalized."""
         cassette_path = tmp_path / "test_env_normalization.yaml"

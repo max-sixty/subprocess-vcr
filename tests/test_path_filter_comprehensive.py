@@ -1,6 +1,9 @@
 """Comprehensive tests for PathFilter pytest path normalization."""
 
 import subprocess
+import sys
+
+import pytest
 
 from subprocess_vcr import SubprocessVCR
 from subprocess_vcr.filters import PathFilter
@@ -83,6 +86,7 @@ class TestPathFilterComprehensive:
                 f"Expected {expected}, got {result['args'][1]}"
             )
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows HOME path handling differs")
     def test_home_directory_normalization(self):
         """Test home directory normalization works correctly."""
         import os

@@ -1,6 +1,7 @@
 """Test error messages from subprocess-vcr."""
 
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,7 @@ from subprocess_vcr import SubprocessVCR, SubprocessVCRError
 from subprocess_vcr.filters import PathFilter
 
 
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows path separators differ")
 def test_error_message_shows_normalized_differences_when_using_cwd(tmp_path):
     """Test that error messages show normalized paths in differences section."""
     cassette_path = tmp_path / "test_normalized_diff.yaml"

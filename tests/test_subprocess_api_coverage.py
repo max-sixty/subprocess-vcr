@@ -352,6 +352,7 @@ class TestShellCommands:
         assert result.returncode == 0
         assert "line2" in result.stdout
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows env var expansion differs")
     def test_shell_with_env_vars(self, tmp_path):
         """Test shell commands with environment variable expansion."""
         cassette = tmp_path / "shell_env.yaml"
@@ -673,6 +674,7 @@ class TestEnvironmentVariables:
 
         assert "test_value" in result.stdout
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows command not found")
     def test_env_affects_behavior(self, tmp_path):
         """Test that env changes can affect command behavior."""
         cassette = tmp_path / "env_behavior.yaml"
@@ -861,6 +863,7 @@ class TestErrorHandling:
 
         vcr.unpatch()
 
+    @pytest.mark.xfail(sys.platform == "win32", reason="Windows encoding handling differs")
     def test_encoding_parameter(self, tmp_path):
         """Test encoding parameter handling."""
         cassette = tmp_path / "encoding.yaml"

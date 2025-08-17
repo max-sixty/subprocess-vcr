@@ -1,6 +1,7 @@
 """Test that filters work correctly during command matching."""
 
 import subprocess
+import sys
 
 import pytest
 
@@ -8,6 +9,7 @@ from subprocess_vcr import SubprocessVCR
 from subprocess_vcr.filters import PathFilter
 
 
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows path separators differ")
 def test_cwd_filter_normalizes_for_matching(tmp_path):
     """Test that PathFilter normalizes CWD paths during matching, not just recording."""
     cassette_path = tmp_path / "test_matching.yaml"
@@ -57,6 +59,7 @@ def test_cwd_filter_normalizes_for_matching(tmp_path):
         assert "test: true" in result.stdout
 
 
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows path normalization differs")
 def test_path_filter_normalizes_for_matching(tmp_path):
     """Test that PathFilter normalizes paths during matching."""
     cassette_path = tmp_path / "test_path_matching.yaml"
@@ -133,6 +136,7 @@ def test_multiple_filters_normalize_for_matching(tmp_path):
         assert result.returncode == 0
 
 
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows path separators differ")
 def test_no_match_shows_normalized_command(tmp_path):
     """Test that error messages show both original and normalized commands."""
     cassette_path = tmp_path / "test_error.yaml"

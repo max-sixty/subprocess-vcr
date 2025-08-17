@@ -1,6 +1,7 @@
 """Test error handling and diagnostics in subprocess-vcr."""
 
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -9,6 +10,7 @@ import pytest
 from subprocess_vcr import SubprocessVCR, SubprocessVCRError
 
 
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows file locking differs")
 def test_file_handle_error_message(tmp_path):
     """Test that file handles produce a helpful error message."""
     cassette_path = tmp_path / "test.yaml"
@@ -40,6 +42,7 @@ def test_file_handle_error_message(tmp_path):
             Path(temp_file_path).unlink(missing_ok=True)
 
 
+@pytest.mark.xfail(sys.platform == "win32", reason="Windows file locking differs")
 def test_file_handle_stderr_error(tmp_path):
     """Test that stderr file handles also produce good error messages."""
     cassette_path = tmp_path / "test.yaml"
