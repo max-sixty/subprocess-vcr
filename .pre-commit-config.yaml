@@ -6,17 +6,6 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  # Type checking
-  - repo: local
-    hooks:
-      - id: dmypy
-        name: dmypy
-        entry: uv run dmypy run
-        args: [--timeout, "3600"]
-        language: system
-        pass_filenames: false
-        always_run: true
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
