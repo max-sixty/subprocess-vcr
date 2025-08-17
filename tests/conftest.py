@@ -88,7 +88,7 @@ def isolated_pytester(pytester, monkeypatch):
 
         def __init__(self, pytester):
             self._pytester = pytester
-            # Standard plugins that most subprocess_vcr tests need
+            # When PYTEST_DISABLE_PLUGIN_AUTOLOAD is set, we need to explicitly load the plugin
             self.standard_plugins = ["-p", "subprocess_vcr.pytest_plugin"]
 
         def runpytest(self, *args, **kwargs):

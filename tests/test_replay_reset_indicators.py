@@ -9,12 +9,7 @@ def test_replay_reset_shows_R_indicator_on_fallback(pytester):
     This test demonstrates the bug where "no tests ran" is shown instead of
     the proper 'R' indicator when a test fails replay and falls back to reset.
     """
-    # Create conftest to load the plugin
-    pytester.makeconftest(
-        """
-        pytest_plugins = ["subprocess_vcr.pytest_plugin"]
-        """
-    )
+    # Plugin is auto-loaded via entry point, no need for explicit loading
 
     # Create a test file
     pytester.makepyfile(
@@ -79,12 +74,7 @@ def test_replay_reset_shows_R_indicator_on_fallback(pytester):
 
 def test_replay_reset_shows_dot_on_successful_replay(pytester):
     """Test that replay+reset mode shows '.' when replay succeeds (no reset needed)."""
-    # Create conftest to load the plugin
-    pytester.makeconftest(
-        """
-        pytest_plugins = ["subprocess_vcr.pytest_plugin"]
-        """
-    )
+    # Plugin is auto-loaded via entry point, no need for explicit loading
 
     # Create a test file
     pytester.makepyfile(
@@ -121,12 +111,7 @@ def test_replay_reset_shows_dot_on_successful_replay(pytester):
 
 def test_reset_mode_shows_R_indicator(pytester):
     """Test that reset mode always shows 'R' indicator."""
-    # Create conftest to load the plugin
-    pytester.makeconftest(
-        """
-        pytest_plugins = ["subprocess_vcr.pytest_plugin"]
-        """
-    )
+    # Plugin is auto-loaded via entry point, no need for explicit loading
 
     # Create a test file
     pytester.makepyfile(

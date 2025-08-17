@@ -64,8 +64,6 @@ def test_corrupted_yaml_replay_mode_fails(pytester):
     result = pytester.runpytest(
         "-xvs",
         "--subprocess-vcr=replay",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
     )
 
     # Setup errors: YAML parsing fails during test setup, not execution
@@ -84,8 +82,6 @@ def test_corrupted_yaml_reset_mode_succeeds(pytester):
     result = pytester.runpytest(
         "-xvs",
         "--subprocess-vcr=reset",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
     )
 
     # VCR-specific: Reset mode shows custom status marker
@@ -106,8 +102,6 @@ def test_corrupted_yaml_record_mode_fails(pytester):
     result = pytester.runpytest(
         "-xvs",
         "--subprocess-vcr=record",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
     )
 
     # Setup errors: YAML parsing fails during test setup, not execution
@@ -126,8 +120,6 @@ def test_replay_reset_with_corrupted_yaml(pytester):
     result = pytester.runpytest(
         "-xvs",
         "--subprocess-vcr=replay+reset",
-        "-p",
-        "subprocess_vcr.pytest_plugin",
     )
 
     # With the new retry implementation, tests that fail during setup due to

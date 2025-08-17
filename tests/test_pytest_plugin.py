@@ -5,9 +5,6 @@ from pathlib import Path
 
 import pytest
 
-# Load our plugin for these tests
-pytest_plugins = ["subprocess_vcr.pytest_plugin"]
-
 
 @pytest.fixture(scope="session")
 def subprocess_vcr_config():
