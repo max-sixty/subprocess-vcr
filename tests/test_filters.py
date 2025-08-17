@@ -89,12 +89,14 @@ class TestPathFilter:
         import os
 
         # Get the real home directory
-        try:
+        import sys
+
+        if sys.platform != "win32":
             import pwd
 
             # This is not affected by pytest's HOME manipulation on Unix
             real_home = pwd.getpwuid(os.getuid()).pw_dir
-        except (ImportError, AttributeError):
+        else:
             # Windows fallback
             from pathlib import Path
 
