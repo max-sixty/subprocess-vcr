@@ -42,7 +42,7 @@ class TestSubprocessAPIMethods:
                 lambda cmd, **kw: subprocess.check_output(
                     cmd, stderr=subprocess.DEVNULL, **kw
                 ),
-                lambda result: isinstance(result, bytes | str),
+                lambda result: isinstance(result, (bytes, str)),
             ),
             (
                 lambda cmd, **kw: subprocess.call(
