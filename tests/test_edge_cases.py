@@ -642,7 +642,7 @@ interactions:
         # since root can write to read-only files
         import os
 
-        if hasattr(os, 'getuid') and os.getuid() == 0:
+        if hasattr(os, "getuid") and os.getuid() == 0:
             original_open = open
 
             def mock_open(path, mode="r", *args, **kwargs):
